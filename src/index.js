@@ -1,3 +1,4 @@
+import compression from 'compression'
 import express from 'express'
 import path from 'path'
 import React from 'react'
@@ -7,6 +8,8 @@ import Hello from './public/components/Hello'
 import MultipleRoutes from './public/components/MultipleRoutes'
 
 const app = express()
+
+app.use(compression())
 
 app.use('/static', express.static(path.resolve(__dirname, 'public')))
 
@@ -79,5 +82,13 @@ app.get('/with-react-router*', (req, res) => {
     res.send(html)
   }
 })
+
+app.get('*', (req, res) =>
+  res
+    .status(404)
+    .send(
+      `<body style="background-color: #3c3c3c;"><h1 style="font-family: sans-serif; color: #c7c7c7; text-align: center;">404 - Not Found</h1></body>`
+    )
+)
 
 app.listen(3000)
