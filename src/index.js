@@ -11,21 +11,36 @@ app.use('/static', express.static(path.resolve(__dirname, 'public')))
 app.get('/', (req, res) => {
   const name = 'Marvelous Wololo'
 
-  const component = ReactDOMServer.renderToString(<Hello name={name} />)
+  const componentStream = ReactDOMServer.renderToNodeStream(
+    <Hello name={name} />
+  )
 
-  const html = `
+  const htmlStart = `
   <!doctype html>
     <html>
     <head>
       <script>window.__INITIAL__DATA__ = ${JSON.stringify({ name })}</script>
     </head>
     <body>
-    <div id="root">${component}</div>
+    <div id="root">`
+
+  res.write(htmlStart)
+
+  componentStream.pipe(
+    res,
+    { end: false }
+  )
+
+  const htmlEnd = `</div>
     <script src="/static/home.js"></script>
   </body>
   </html>`
 
-  res.send(html)
+  componentStream.on('end', () => {
+    res.write(htmlEnd)
+
+    res.end()
+  })
 })
 
 app.listen(3000)
