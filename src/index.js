@@ -21,6 +21,7 @@ app.get('/', (req, res) => {
   <!doctype html>
     <html>
     <head>
+      <link rel='shortcut icon' type='image/x-icon' href='/static/favicon.ico' />
       <script>window.__INITIAL__DATA__ = ${JSON.stringify({ name })}</script>
     </head>
     <body>
@@ -59,7 +60,7 @@ app.get('/with-react-router*', (req, res) => {
   <!doctype html>
     <html>
     <head>
-      <title>document</title>
+      <link rel='shortcut icon' type='image/x-icon' href='/static/favicon.ico' />
     </head>
     <body>
       <div id="root">${component}</div>
