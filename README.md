@@ -11,10 +11,10 @@ to the generated markup so it is able to resolve later which event should be
 attached to which element in the DOM. (Kind of). You can read more [at the
 official docs](https://reactjs.org/docs/react-dom-server.html).
 
-### [Here is the final code](https://github.com/MarvelousWololo/ssr-react)
+### [Here is the final code](https://github.com/MarvelousWololo/ssr-react) and [demo](http://159.89.36.179:11324/)
 
 In my previous attempts to properly render my app on the server and hydrate it
-on the client, I've got lost in the Wepack configuration: it has been
+on the client, I've got lost in the Webpack configuration: it has been
 changing quite a bit in any major release, so often documentation and tutorials are obsolete. This is also my attempt to try to save you some time.
 
 I tried to keep it as verbose as possible to ease the learning process, so I've divided it into seven parts:
