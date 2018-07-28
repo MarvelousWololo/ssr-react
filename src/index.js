@@ -91,4 +91,6 @@ app.get('*', (req, res) =>
     )
 )
 
-app.listen(3000)
+const { PORT = 3000 } = process.env
+
+app.listen(PORT, () => console.log('######## app running ########'))

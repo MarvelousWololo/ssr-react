@@ -9,7 +9,7 @@
     "test": "webpack --config webpack.test.js && concurrently \"webpack --config webpack.test.js --watch\" \"mocha --watch\"",
     "start": "NODE_ENV=production node dist/index.js",
     "copy_static_assets": "node copyStaticAssets.js",
-    "deploy": "now --public"
+    "deploy": "git push dokku master"
   },
   "engines": {
     "node": "9.2.0"
