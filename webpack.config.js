@@ -43,6 +43,11 @@ const clientConfig = {
   module: {
     rules: [js]
   },
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
+  },
   output: {
     path: path.resolve(__dirname, 'dist/public'),
     filename: '[name]'
