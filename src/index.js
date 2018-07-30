@@ -25,6 +25,8 @@ app.get('/', (req, res) => {
     <html>
     <head>
       <link rel='shortcut icon' type='image/x-icon' href='/static/favicon.ico' />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <script>window.__INITIAL__DATA__ = ${JSON.stringify({ name })}</script>
     </head>
     <body>
@@ -64,6 +66,8 @@ app.get('/with-react-router*', (req, res) => {
     <html>
     <head>
       <link rel='shortcut icon' type='image/x-icon' href='/static/favicon.ico' />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
     </head>
     <body>
       <div id="root">${component}</div>
