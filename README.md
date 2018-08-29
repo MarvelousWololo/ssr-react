@@ -11,7 +11,7 @@ to the generated markup so it is able to resolve later which event should be
 attached to which element in the DOM. (Kind of). You can read more [at the
 official docs](https://reactjs.org/docs/react-dom-server.html).
 
-### [Here is the final code](https://github.com/MarvelousWololo/ssr-react) and [demo](http://159.89.36.179:11324/)
+### [Here is the final code](https://github.com/MarvelousWololo/ssr-react) and [demo](https://react-ssr-dlbqrekqrn.now.sh)
 
 In my previous attempts to properly render my app on the server and hydrate it
 on the client, I've got lost in the Webpack configuration: it has been
