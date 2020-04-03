@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, Route } from "react-router-dom";
+import Markdown from "markdown-to-jsx";
 
 const Home = () => (
   <div>
@@ -12,6 +13,33 @@ const About = () => (
     <h2>About</h2>
   </div>
 );
+
+class ReadMe extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { markdown: "" };
+  }
+
+  componentDidMount() {
+    this.fetchTutorial();
+  }
+
+  fetchTutorial() {
+    fetch("/tutorial.json")
+      .then((res) => res.json())
+      .then(({ data }) => this.setState({ markdown: data }))
+      .catch((e) => console.error(e));
+  }
+
+  render() {
+    return this.state.markdown ? (
+      <div>
+        <Markdown>{this.state.markdown}</Markdown>
+      </div>
+    ) : null;
+  }
+}
 
 const Topics = ({ match }) => (
   <div>
@@ -56,6 +84,9 @@ const MultipleRoutes = () => (
         <Link to="/with-react-router/topics">Topics</Link>
       </li>
       <li>
+        <Link to="/with-react-router/tutorial">Tutorial</Link>
+      </li>
+      <li>
         <a href="/">return to server</a>
       </li>
     </ul>
@@ -65,6 +96,7 @@ const MultipleRoutes = () => (
     <Route exact path="/with-react-router" component={Home} />
     <Route path="/with-react-router/about" component={About} />
     <Route path="/with-react-router/topics" component={Topics} />
+    <Route path="/with-react-router/tutorial" component={ReadMe} />
   </div>
 );
 

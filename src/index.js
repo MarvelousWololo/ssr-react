@@ -1,5 +1,6 @@
 import compression from "compression";
 import express from "express";
+import fs from "fs";
 import path from "path";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
@@ -20,8 +21,7 @@ app.get("/", (req, res) => {
     <Hello name={name} />
   );
 
-  const htmlStart = `
-  <!doctype html>
+  const htmlStart = `<!doctype html>
     <html>
     <head>
       <link rel='shortcut icon' type='image/x-icon' href='/static/favicon.ico' />
@@ -39,8 +39,7 @@ app.get("/", (req, res) => {
 
   componentStream.pipe(res, { end: false });
 
-  const htmlEnd = `
-    </div>
+  const htmlEnd = `</div>
     <script src="/static/vendors~home.js~multipleRoutes.js"></script>
     <script src="/static/home.js"></script>
   </body>
@@ -88,6 +87,18 @@ app.get("/with-react-router*", (req, res) => {
   } else {
     res.send(html);
   }
+});
+
+app.get("/tutorial.json", (req, res) => {
+  fs.readFile(path.join(__dirname, "../README.md"), "utf8", (err, data) => {
+    if (err) {
+      console.error(err);
+
+      return;
+    } else {
+      res.json({ data });
+    }
+  });
 });
 
 app.get("*", (req, res) => {
