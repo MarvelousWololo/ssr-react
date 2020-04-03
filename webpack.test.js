@@ -8,8 +8,7 @@ const js = {
   use: {
     loader: 'babel-loader',
     options: {
-      presets: ['react', 'es2015'],
-      plugins: ['transform-class-properties']
+      presets: ['@babel/preset-env', '@babel/preset-react']
     }
   }
 }
