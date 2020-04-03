@@ -6,9 +6,10 @@
   "scripts": {
     "build": "webpack --mode=production && npm run copy_static_assets",
     "dev": "webpack && npm run copy_static_assets && concurrently \"webpack --watch\" \"nodemon dist\"",
-    "test": "webpack --config webpack.test.js && concurrently \"webpack --config webpack.test.js --watch\" \"mocha --watch\"",
+    "test": "npm run webpack && concurrently \"npm run webpack --watch\" \"mocha --watch\"",
     "start": "NODE_ENV=production node dist/index.js",
-    "copy_static_assets": "node copyStaticAssets.js"
+    "copy_static_assets": "node copyStaticAssets.js",
+    "webpack": "webpack --config webpack.test.js"
   },
   "engines": {
     "node": "9.2.0"
