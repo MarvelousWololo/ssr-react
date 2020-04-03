@@ -616,20 +616,20 @@ configuration mode to `production`:
 
 ```
                             Asset      Size
-                          home.js  2.01 KiB
-                multipleRoutes.js  3.65 KiB
-        vendors~multipleRoutes.js  40.3 KiB
-vendors~home.js~multipleRoutes.js  98.9 KiB
+                          home.js  1.82 KiB
+                multipleRoutes.js  3.27 KiB
+        vendors~multipleRoutes.js  24.9 KiB
+vendors~home.js~multipleRoutes.js  127 KiB
 ```
 
 and `development`:
 
 ```
                             Asset      Size
-                          home.js  8.21 KiB
-                multipleRoutes.js  11.9 KiB
-        vendors~multipleRoutes.js   179 KiB
-vendors~home.js~multipleRoutes.js   708 KiB
+                          home.js  8.79 KiB
+                multipleRoutes.js  13.6 KiB
+        vendors~multipleRoutes.js   147 KiB
+vendors~home.js~multipleRoutes.js   971 KiB
 ```
 
 Well, I think that is it. I hope you have enjoyed this little tutorial and also I hope it might be useful for your own projects.
