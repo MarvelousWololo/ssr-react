@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const Hello = (props) => (
   <React.Fragment>
@@ -6,6 +6,6 @@ const Hello = (props) => (
 
     <a href="/with-react-router">with React Router</a>
   </React.Fragment>
-)
+);
 
-export default Hello
+export default Hello;

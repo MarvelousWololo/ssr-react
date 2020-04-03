@@ -1,17 +1,17 @@
-import React from 'react'
-import { Link, Route } from 'react-router-dom'
+import React from "react";
+import { Link, Route } from "react-router-dom";
 
 const Home = () => (
   <div>
     <h2>Home</h2>
   </div>
-)
+);
 
 const About = () => (
   <div>
     <h2>About</h2>
   </div>
-)
+);
 
 const Topics = ({ match }) => (
   <div>
@@ -35,13 +35,13 @@ const Topics = ({ match }) => (
       render={() => <h3>Please select a topic.</h3>}
     />
   </div>
-)
+);
 
 const Topic = ({ match }) => (
   <div>
     <h3>{match.params.topicId}</h3>
   </div>
-)
+);
 
 const MultipleRoutes = () => (
   <div>
@@ -66,6 +66,6 @@ const MultipleRoutes = () => (
     <Route path="/with-react-router/about" component={About} />
     <Route path="/with-react-router/topics" component={Topics} />
   </div>
-)
+);
 
-export default MultipleRoutes
+export default MultipleRoutes;
