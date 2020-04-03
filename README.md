@@ -32,19 +32,19 @@ I tried to keep it as verbose as possible to ease the learning process, so I've 
 First we should install our dependencies:
 
 ```
-npm i express react react-dom
+npm i -E express react react-dom
 ```
 
 and our development dependencies:
 
 ```
-npm i -D webpack webpack-cli webpack-node-externals babel-core babel-loader babel-preset-es2015 babel-preset-react babel-plugin-transform-class-properties
+npm i -DE webpack webpack-cli webpack-node-externals @babel/core babel-loader @babel/preset-env @babel/preset-react
 ```
 
 other tools that will helps us in development:
 
 ```
-npm i -D concurrently nodemon
+npm i -DE concurrently nodemon
 ```
 
 Let's configure Webpack. We will need two Webpack configurations, one for the
@@ -66,13 +66,12 @@ const js = {
   test: /\.js$/,
   exclude: /node_modules/,
   use: {
-    loader: 'babel-loader',
+    loader: "babel-loader",
     options: {
-      presets: ['react', 'es2015'],
-      plugins: ['transform-class-properties']
-    }
-  }
-}
+      presets: ["@babel/preset-env", "@babel/preset-react"],
+    },
+  },
+};
 ```
 
 Note that in both configurations I'm using different targets.
@@ -98,23 +97,23 @@ node](https://webpack.js.org/concepts/targets/#usage), it should have kept the
 ```js
 // webpack.config.js
 const serverConfig = {
-  mode: 'development',
-  target: 'node',
+  mode: "development",
+  target: "node",
   node: {
-    __dirname: false
+    __dirname: false,
   },
   externals: [nodeExternals()],
   entry: {
-    'index.js': path.resolve(__dirname, 'src/index.js')
+    "index.js": path.resolve(__dirname, "src/index.js"),
   },
   module: {
-    rules: [js]
+    rules: [js],
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: '[name]'
-  }
-}
+    path: path.resolve(__dirname, "dist"),
+    filename: "[name]",
+  },
+};
 ```
 
 and our client configuration:
@@ -122,26 +121,26 @@ and our client configuration:
 ```js
 // webpack.config.js
 const clientConfig = {
-  mode: 'development',
-  target: 'web',
+  mode: "development",
+  target: "web",
   entry: {
-    'home.js': path.resolve(__dirname, 'src/public/home.js')
+    "home.js": path.resolve(__dirname, "src/public/home.js"),
   },
   module: {
-    rules: [js]
+    rules: [js],
   },
   output: {
-    path: path.resolve(__dirname, 'dist/public'),
-    filename: '[name]'
-  }
-}
+    path: path.resolve(__dirname, "dist/public"),
+    filename: "[name]",
+  },
+};
 ```
 
 Finally, we will export both configurations:
 
 ```js
 // webpack.config.js
-module.exports = [serverConfig, clientConfig]
+module.exports = [serverConfig, clientConfig];
 ```
 
 You can find the final file [here](https://github.com/MarvelousWololo/ssr-react/blob/d664c62aad62d24e6ae7b2b8ee6defa9eaabb00e/webpack.config.js)
@@ -152,15 +151,15 @@ Now we will create a component and will mount it in the DOM:
 
 ```js
 // src/public/components/Hello.js
-import React from 'react'
+import React from "react";
 
 const Hello = (props) => (
   <React.Fragment>
     <h1>Hello, {props.name}!</h1>
   </React.Fragment>
-)
+);
 
-export default Hello
+export default Hello;
 ```
 
 Here is the file that will mount our component in the DOM, note that we are
@@ -168,34 +167,34 @@ using the `hydrate` method of `react-dom` and not `render` as is usual.
 
 ```js
 // src/public/home.js
-import React from 'react'
-import ReactDOM from 'react-dom'
-import Hello from './components/Hello'
+import React from "react";
+import ReactDOM from "react-dom";
+import Hello from "./components/Hello";
 
 ReactDOM.hydrate(
   <Hello name={window.__INITIAL__DATA__.name} />,
-  document.getElementById('root')
-)
+  document.getElementById("root")
+);
 ```
 
 Then we can write our server code:
 
 ```js
 // src/index.js
-import express from 'express'
-import path from 'path'
-import React from 'react'
-import ReactDOMServer from 'react-dom/server'
-import Hello from './public/components/Hello'
+import express from "express";
+import path from "path";
+import React from "react";
+import ReactDOMServer from "react-dom/server";
+import Hello from "./public/components/Hello";
 
-const app = express()
+const app = express();
 
-app.use('/static', express.static(path.resolve(__dirname, 'public')))
+app.use("/static", express.static(path.resolve(__dirname, "public")));
 
-app.get('/', (req, res) => {
-  const name = 'Marvelous Wololo'
+app.get("/", (req, res) => {
+  const name = "Marvelous Wololo";
 
-  const component = ReactDOMServer.renderToString(<Hello name={name} />)
+  const component = ReactDOMServer.renderToString(<Hello name={name} />);
 
   const html = `
   <!doctype html>
@@ -207,12 +206,12 @@ app.get('/', (req, res) => {
     <div id="root">${component}</div>
     <script src="/static/home.js"></script>
   </body>
-  </html>`
+  </html>`;
 
-  res.send(html)
-})
+  res.send(html);
+});
 
-app.listen(3000)
+app.listen(3000);
 ```
 
 Note that we are stringifying the content of `name` so we can reuse its value on
@@ -245,12 +244,12 @@ more specific to React
 Here's our new `/` route:
 
 ```js
-app.get('/', (req, res) => {
-  const name = 'Marvelous Wololo'
+app.get("/", (req, res) => {
+  const name = "Marvelous Wololo";
 
   const componentStream = ReactDOMServer.renderToNodeStream(
     <Hello name={name} />
-  )
+  );
 
   const htmlStart = `
   <!doctype html>
@@ -259,26 +258,23 @@ app.get('/', (req, res) => {
       <script>window.__INITIAL__DATA__ = ${JSON.stringify({ name })}</script>
     </head>
     <body>
-    <div id="root">`
+    <div id="root">`;
 
-  res.write(htmlStart)
+  res.write(htmlStart);
 
-  componentStream.pipe(
-    res,
-    { end: false }
-  )
+  componentStream.pipe(res, { end: false });
 
   const htmlEnd = `</div>
     <script src="/static/home.js"></script>
   </body>
-  </html>`
+  </html>`;
 
-  componentStream.on('end', () => {
-    res.write(htmlEnd)
+  componentStream.on("end", () => {
+    res.write(htmlEnd);
 
-    res.end()
-  })
-})
+    res.end();
+  });
+});
 ```
 
 ## Combine the Express router with React Router
@@ -288,7 +284,7 @@ We can use the Express router with the React Router library.
 Install React Router:
 
 ```
-npm i react-router-dom
+npm i -E react-router-dom
 ```
 
 First we need to add a new Webpack entry in the `clientConfig`:
@@ -307,20 +303,20 @@ docs](https://reacttraining.com/react-router/web/example/basic), let's call it `
 
 ```js
 // src/public/components/MultipleRoutes.js
-import React from 'react'
-import { Link, Route } from 'react-router-dom'
+import React from "react";
+import { Link, Route } from "react-router-dom";
 
 const Home = () => (
   <div>
     <h2>Home</h2>
   </div>
-)
+);
 
 const About = () => (
   <div>
     <h2>About</h2>
   </div>
-)
+);
 
 const Topics = ({ match }) => (
   <div>
@@ -344,13 +340,13 @@ const Topics = ({ match }) => (
       render={() => <h3>Please select a topic.</h3>}
     />
   </div>
-)
+);
 
 const Topic = ({ match }) => (
   <div>
     <h3>{match.params.topicId}</h3>
   </div>
-)
+);
 
 const MultipleRoutes = () => (
   <div>
@@ -375,27 +371,27 @@ const MultipleRoutes = () => (
     <Route path="/with-react-router/about" component={About} />
     <Route path="/with-react-router/topics" component={Topics} />
   </div>
-)
+);
 
-export default MultipleRoutes
+export default MultipleRoutes;
 ```
 
 and
 
 ```js
 // src/public/multipleRoutes.js
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { BrowserRouter as Router } from 'react-router-dom'
-import MultipleRoutes from './components/MultipleRoutes'
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter as Router } from "react-router-dom";
+import MultipleRoutes from "./components/MultipleRoutes";
 
 const BasicExample = () => (
   <Router>
     <MultipleRoutes />
   </Router>
-)
+);
 
-ReactDOM.hydrate(<BasicExample />, document.getElementById('root'))
+ReactDOM.hydrate(<BasicExample />, document.getElementById("root"));
 ```
 
 in our server we will import the new component and also the React Router
@@ -406,17 +402,17 @@ request to `/with-react-router` will be handled here. E.g.: `/with-react-router/
 ```js
 // src/index.js
 // ...
-import { StaticRouter as Router } from 'react-router-dom'
-import MultipleRoutes from './public/components/MultipleRoutes'
+import { StaticRouter as Router } from "react-router-dom";
+import MultipleRoutes from "./public/components/MultipleRoutes";
 // ...
-app.get('/with-react-router*', (req, res) => {
-  const context = {}
+app.get("/with-react-router*", (req, res) => {
+  const context = {};
 
   const component = ReactDOMServer.renderToString(
     <Router location={req.url} context={context}>
       <MultipleRoutes />
     </Router>
-  )
+  );
 
   const html = `
   <!doctype html>
@@ -429,15 +425,15 @@ app.get('/with-react-router*', (req, res) => {
       <script src="/static/multipleRoutes.js"></script>
     </body>
     </html>
-  `
+  `;
 
   if (context.url) {
-    res.writeHead(301, { Location: context.url })
-    res.end()
+    res.writeHead(301, { Location: context.url });
+    res.end();
   } else {
-    res.send(html)
+    res.send(html);
   }
-})
+});
 ```
 
 **Note** that we have used different routers from `react-router-dom` in the
@@ -456,7 +452,7 @@ const Hello = (props) => (
 
     <a href="/with-react-router">with React Router</a>
   </React.Fragment>
-)
+);
 ```
 
 ## Using Express query string
@@ -484,7 +480,7 @@ that we have to compile the tests files too (I'm not sure if there's any other
 way around it, I think not).
 
 ```
-npm i -D mocha chai react-addons-test-utils enzyme enzyme-adapter-react-16
+npm i -DE mocha chai react-addons-test-utils enzyme enzyme-adapter-react-16
 ```
 
 So I'll create a new Webpack config for tests, you'll note that the configuration is almost
@@ -492,40 +488,39 @@ exactly the same as we already have for the server files:
 
 ```js
 // webpack.tests.js
-const webpack = require('webpack')
-const nodeExternals = require('webpack-node-externals')
-const path = require('path')
+const webpack = require("webpack");
+const nodeExternals = require("webpack-node-externals");
+const path = require("path");
 
 const js = {
   test: /\.js$/,
   exclude: /node_modules/,
   use: {
-    loader: 'babel-loader',
+    loader: "babel-loader",
     options: {
-      presets: ['react', 'es2015'],
-      plugins: ['transform-class-properties']
-    }
-  }
-}
+      presets: ["@babel/preset-env", "@babel/preset-react"],
+    },
+  },
+};
 
 module.exports = {
-  mode: 'development',
-  target: 'node',
+  mode: "development",
+  target: "node",
   node: {
-    __dirname: false
+    __dirname: false,
   },
   externals: [nodeExternals()],
   entry: {
-    'app.spec.js': path.resolve(__dirname, 'specs/app.spec.js')
+    "app.spec.js": path.resolve(__dirname, "specs/app.spec.js"),
   },
   module: {
-    rules: [js]
+    rules: [js],
   },
   output: {
-    path: path.resolve(__dirname, 'test'),
-    filename: '[name]'
-  }
-}
+    path: path.resolve(__dirname, "test"),
+    filename: "[name]",
+  },
+};
 ```
 
 I will create a test file `app.spec.js` and a `specs` directory in the root of the
@@ -533,23 +528,23 @@ project.
 
 ```js
 // specs/app.spec.js
-import { expect } from 'chai'
-import Enzyme, { shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
-import React from 'react'
-import Hello from '../public/components/Hello'
+import { expect } from "chai";
+import Enzyme, { shallow } from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
+import React from "react";
+import Hello from "../public/components/Hello";
 
-Enzyme.configure({ adapter: new Adapter() })
+Enzyme.configure({ adapter: new Adapter() });
 
-describe('<Hello />', () => {
-  it('renders <Hello />', () => {
-    const wrapper = shallow(<Hello name="tests" />)
-    const actual = wrapper.find('h1').text()
-    const expected = 'Hello, tests!'
+describe("<Hello />", () => {
+  it("renders <Hello />", () => {
+    const wrapper = shallow(<Hello name="tests" />);
+    const actual = wrapper.find("h1").text();
+    const expected = "Hello, tests!";
 
-    expect(actual).to.be.equal(expected)
-  })
-})
+    expect(actual).to.be.equal(expected);
+  });
+});
 ```
 
 We will also create a new (long and ugly) NPM script to run our tests:
@@ -580,7 +575,7 @@ So, if we add:
 // ...
 optimization: {
   splitChunks: {
-    chunks: 'all'
+    chunks: "all";
   }
 }
 // ...
