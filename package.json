@@ -18,9 +18,14 @@
     "type": "git",
     "url": "https://github.com/MarvelousWololo/ssr-react"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "react",
+    "expressjs",
+    "react-router",
+    "server-side-rendering"
+  ],
+  "author": "Marvelous Wololo <marvelous.wololo@gmail.com>",
+  "license": "MIT",
   "dependencies": {
     "compression": "^1.7.3",
     "express": "^4.16.4",
