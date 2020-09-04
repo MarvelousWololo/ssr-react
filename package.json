@@ -29,7 +29,7 @@
   "dependencies": {
     "compression": "1.7.4",
     "express": "4.17.1",
-    "markdown-to-jsx": "6.11.0",
+    "markdown-to-jsx": "6.11.4",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-router-dom": "5.1.2"
